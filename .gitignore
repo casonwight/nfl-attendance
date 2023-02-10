@@ -2,3 +2,5 @@ nfl-attendance.code-workspace
 .Rproj.user
 .RData
 .Rhistory
+results/*.RData
+results/*.rda
