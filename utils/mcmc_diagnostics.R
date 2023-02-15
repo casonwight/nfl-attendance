@@ -28,7 +28,7 @@ get_trace_plot <- function(samples, var_name, team_names, team_name=NA, num_chai
     
     short_var_name <- str_sub(var_name, end=-2)
     
-    if (is.na(team_name)) {
+    if (is.na(team_name) | team_name == "All teams") {
       cleaned_var_name <- parse(text=short_var_name)
       cleaned_title <- parse(text=paste0("'Trace'~'Plots'~'of'~", short_var_name))
       
@@ -77,7 +77,7 @@ get_acf_plot <- function(samples, var_name, team_names, team_name=NA, num_chains
            x = "Lag", 
            y = "Autocorrelation") + 
       theme_light()
-  } else if (is.na(team_name)) {
+  } else if (is.na(team_name) | team_name == "All teams") {
     short_var_name <- str_sub(var_name, end=-2)
     cleaned_var_name <- parse(text=short_var_name)
     cleaned_title <- parse(text=paste0("'Autocorrelation'~'Plots'~'of'~", short_var_name))
@@ -125,7 +125,7 @@ get_effective_sample_size <- function(samples, var_name, team_names, team_name=N
   
   if (str_sub(var_name, -1, -1) != 's'){
     n_eff <- coda::effectiveSize(c(samples[[var_name]])) %>% set_names(var_name)
-  } else if (is.na(team_name)) {
+  } else if (is.na(team_name) | team_name == "All teams") {
     short_var_name <- str_sub(var_name, end=-2)
     n_eff <- coda::effectiveSize(samples[[var_name]]) %>% setNames(paste(short_var_name, team_names, sep="_"))
   } else {
@@ -138,7 +138,7 @@ get_effective_sample_size <- function(samples, var_name, team_names, team_name=N
 get_rhat <- function(fit, var_name, team_names, team_name=NA) {
   if (str_sub(var_name, -1, -1) != 's'){
     rhat <- summary(fit)$summary[var_name,'Rhat']
-  } else if (is.na(team_name)) {
+  } else if (is.na(team_name) | team_name == "All teams") {
     all_row_names <- paste0(var_name, "[", 1:length(team_names), "]")
     short_var_name <- str_sub(var_name, end=-2)
     rhat <- summary(fit)$summary[all_row_names, 'Rhat'] %>% setNames(paste(short_var_name, team_names, sep="_"))

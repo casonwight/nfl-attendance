@@ -1,6 +1,7 @@
 library(tidyverse)
+library(rvest)
 
-get_revenue_data <- function(){
+get_revenue_data <- function() {
   rev_data <- data.frame(
     Year = factor(2010:2020), 
     Total_Revenue = c(8.35, 8.82, 9.17, 9.58, 11.09, 12.16, 13.16, 13.68, 14.48, 15.26, NA),
@@ -8,6 +9,23 @@ get_revenue_data <- function(){
   )
   
   return(rev_data)
+}
+
+get_average_ticket_price_data <- function() {
+  price_data <- "https://www.tickpick.com/blog/how-much-are-nfl-tickets/" %>% 
+    read_html() %>% 
+    html_node("table") %>% 
+    html_table() %>% 
+    filter(X2 != "" & X1 != "NFL Team") %>% 
+    setNames(c("team_name", "avg_cost_2018", "avg_cost_2019", "avg_cost_2021")) %>% 
+    mutate(avg_cost_2019=as.numeric(gsub("\\$", "", avg_cost_2019))) %>% 
+    separate(team_name, c("city", "team_name"),sep=" (?=[^ ]*$)") %>% 
+    filter(team_name != "Texans") %>% 
+    select(team_name, avg_cost_2019) %>% 
+    arrange(team_name)
+  
+  return(price_data)
+  
 }
 
 get_attendance_data <- function(){
@@ -61,6 +79,26 @@ get_attendance_data <- function(){
     filter(home_team != "Texans")
   
   return(data_reshape)
+}
+
+get_2020_attendance_data <- function(attendance_data) {
+  attendance_2020 <- "https://www.pro-football-reference.com/years/2020/attendance.htm" %>% 
+    read_html() %>% 
+    html_node("table") %>% 
+    html_table() %>% 
+    select(Tm, Home) %>% 
+    mutate(Home=replace_na(as.numeric(str_replace(Home, ",", "")), 0)) %>% 
+    filter(!is.na(Tm)) %>% 
+    filter(Tm != "") %>% 
+    separate(Tm, c("city", "team_name"),sep=" (?=[^ ]*$)") %>% 
+    filter(team_name != "Texans")
+  
+  attendance_2020[which("Team" == attendance_2020 %>% pull(team_name)), 1] <- "Washington"
+  attendance_2020[which("Team" == attendance_2020 %>% pull(team_name)), 2] <- "Redskins"
+  
+  attendance_2020 <- attendance_2020 %>% 
+    arrange(team_name)
+  return(attendance_2020)
 }
 
 if(!interactive()){

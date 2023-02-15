@@ -79,6 +79,11 @@ get_stan_model <- function(data, priors){
 }
 
 
+load_stan_models <- function(path) {
+  
+}
+
+
 if(!interactive()){
   source("utils/get_data.R")
   
