@@ -1,0 +1,11 @@
+name: shiny_app
+title:
+username:
+account: cason-wight
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8340224
+bundleId: 6856925
+url: https://cason-wight.shinyapps.io/shiny_app/
+when: 1676619828.73615
+lastSyncTime: 1676619828.73616
