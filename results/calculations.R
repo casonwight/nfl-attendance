@@ -54,3 +54,34 @@ get_post_predicted_lost_attendance <- function(post_pred_attendance, attendance_
   }
   return(mean_pred_attendance)
 }
+
+dollarfy <- function(dollars) { 
+  is_neg <- dollars < 0
+  dollars <- abs(dollars)
+  div <- findInterval(as.numeric(gsub("\\,", "", dollars)), 
+                      c(0, 1e3, 1e6, 1e9, 1e12) )  
+  
+  out <- paste0(
+    ifelse(is_neg, "\U2012", ""),
+    "$",
+    round(as.numeric(gsub("\\,","", dollars))/10^(3*(div-1)), 2), 
+    c("","K","M","B","T")[div]
+  )
+  return(out)
+}
+
+get_est_lost_rev <- function(attendance_lost, prices_2019, team_name=NA) {
+  if (is.na(team_name) | team_name == "All teams") {
+    est_lost_rev <- attendance_lost %>% 
+      left_join(prices_2019) %>% 
+      mutate(total_lost=diff * 16 * avg_cost_2019) %>% 
+      pull(total_lost) %>% 
+      sum()
+  } else {
+    var_team_name <- team_name
+    avg_price_2019 <- prices_2019 %>% filter(team_name==var_team_name) %>% pull(avg_cost_2019)
+    est_lost_rev <- attendance_lost$diff * 16 * avg_price_2019
+  }
+  out <- dollarfy(est_lost_rev)
+  return(out)
+}

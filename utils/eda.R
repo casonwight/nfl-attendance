@@ -97,14 +97,29 @@ plot_avg_attendance_each_team <- function(attendance_data){
 
 
 # Yearly revenue for NFL
-plot_yearly_revenue <- function(rev_data){
-  plt <- rev_data %>% 
-    ggplot(aes(x = Year, y = Total_Revenue)) + 
-    geom_bar(stat = "identity", width = .4, fill = "royalblue") + 
-    theme_light() + 
-    labs(title = "Total NFL Revenue", x = "Year", y = "Revenue (in $Bil.)") + 
-    geom_text(aes(label = Label), nudge_y = 1) +
-    ylim(c(0,max(rev_data$Total_Revenue)*1.3))
+plot_yearly_revenue <- function(rev_data, rev_team_data, team_name=NA){
+  if (is.na(team_name) | team_name == "All teams") {
+    max_rev <- rev_data %>% pull(Total_Revenue) %>% replace_na(0) %>% max()
+    plt <- rev_data %>% 
+      filter(!is.na(Total_Revenue)) %>% 
+      ggplot(aes(x = Year, y = Total_Revenue)) + 
+      geom_bar(stat = "identity", width = .4, fill = "royalblue") + 
+      theme_light() + 
+      labs(title = "Total NFL Revenue", x = "Year", y = "Revenue (in $Bil.)") + 
+      geom_text(aes(label = Label), nudge_y = max_rev/30) +
+      ylim(c(0,max_rev*1.2))
+  } else {
+    var_team_name <- team_name
+    max_rev <- rev_team_data %>% filter(team_name==var_team_name) %>% pull(rev) %>% max()
+    plt <- rev_team_data %>% 
+      filter(team_name==var_team_name) %>% 
+      ggplot(aes(x = year, y = rev)) + 
+      geom_bar(stat = "identity", width = .4, fill = "royalblue") + 
+      theme_light() + 
+      labs(title = paste("NFL Revenue for the", var_team_name), x = "Year", y = "Revenue (in $Mil.)") + 
+      geom_text(aes(label = label), nudge_y = max_rev/30) +
+      ylim(c(0,max_rev*1.2))
+  }
   print(plt)
 }
 

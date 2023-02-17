@@ -140,18 +140,28 @@ plot_attendance <- function(post_predicted_attendance, attendance_2020, team_nam
   
   if (is.na(team_name) | team_name == "All teams"){
     
-    plt <- post_predicted_attendance %>% 
-      pivot_longer(team_names) %>% 
-      ggplot(aes(x=value, color="Posterior Predicted")) + 
-      geom_density() + 
-      geom_vline(data=attendance_2020, aes(xintercept=Home, color="Actual")) +
-      facet_wrap(~team_name, scales="free_y") + 
-      labs(title=paste("2020 NFL Attendance for", team_name), 
-           x="Avg. Weekly Attendance", 
-           y="Density",
-           color="") + 
-      scale_x_continuous(label=scales::comma) +
-      theme_light()
+    team_name_order <- order(colMeans(post_predicted_attendance))
+    attendance_2020_ordered <- attendance_2020 %>% 
+      mutate(team_name=factor(team_name, levels=team_names[team_name_order])) %>% 
+      arrange(team_name)
+      
+    
+    plt <- bayesplot::mcmc_areas(post_predicted_attendance[,rev(team_name_order)], prob = .95) + 
+      theme_light() +
+      scale_x_continuous(labels = scales::comma) +
+      labs(title = "2020 Predicted Attendance",
+           x = "Average Weekly Attendance",
+           y = "Team") +
+      theme(panel.background = element_blank(),
+            panel.grid.minor.x = element_blank(),
+            panel.grid.major.x = element_blank(),
+            panel.border = element_blank()) +
+      geom_segment(data = attendance_2020_ordered, 
+                   aes(x = Home, xend = Home,
+                       y = as.numeric(team_name), yend = as.numeric(team_name)+1, color="Actual"), 
+                   lwd = 1, color = "red") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+      coord_flip()
     
   } else{
     
@@ -164,7 +174,7 @@ plot_attendance <- function(post_predicted_attendance, attendance_2020, team_nam
       setNames(c("x")) %>% 
       ggplot(aes(x=x, color="Posterior Predicted")) + 
       geom_density() + 
-      geom_vline(data=data.frame(act_attendance), aes(xintercept=Home, color="Actual")) +
+      geom_vline(data=data.frame(act_attendance), aes(xintercept=Home, color="Actual"), lwd = 1) +
       labs(title=paste("2020 NFL Attendance for", team_name), 
            x="Avg. Weekly Attendance", 
            y="Density",

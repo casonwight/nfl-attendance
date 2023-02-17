@@ -11,6 +11,43 @@ get_revenue_data <- function() {
   return(rev_data)
 }
 
+get_team_revenue_data <- function(team_names, team_cities) {
+  
+  revenues = vector("list", length = length(team_names))
+  
+  pb = txtProgressBar(min = 1, max = length(team_names), initial = 1) 
+  
+  for (i in 1:length(team_names)){
+    setTxtProgressBar(pb, i)
+    
+    var_team_name <- team_names[i] %>% str_replace_all(" ", "-") %>% tolower()
+    city <- team_cities[i] %>% str_replace_all(" ", "-") %>% tolower()
+    
+    revenues[[i]] <- "https://www.forbes.com/teams/" %>% 
+      paste0(city, "-", var_team_name) %>% 
+      read_html() %>% 
+      html_node(xpath="/html/body/div[1]/main/div/div[1]/div[10]/div/div[2]/div[2]") %>% 
+      html_nodes("[class='bar__item']") %>% 
+      html_text() %>% 
+      as.data.frame() %>% 
+      setNames("year") %>% 
+      mutate(year=str_replace_all(year, "\\$", " ")) %>% 
+      separate(year, c("year", "rev"), " ", remove=TRUE) %>% 
+      mutate(rev=gsub("M", "e6", rev)) %>% 
+      mutate(rev=gsub("B", "e9", rev)) %>%
+      mutate(rev=as.numeric(rev)) %>% 
+      mutate(year=as.numeric(year)) %>% 
+      filter(year < 2020) %>% 
+      mutate(team_name=team_names[i]) %>% 
+      mutate(rev=rev/1000000) %>% 
+      mutate(label=ifelse(year==2019, paste0("$", round(rev, 1), " M"),""))
+    
+  }
+  close(pb)
+  
+  return(do.call(rbind, revenues))
+}
+
 get_average_ticket_price_data <- function() {
   price_data <- "https://www.tickpick.com/blog/how-much-are-nfl-tickets/" %>% 
     read_html() %>% 
@@ -87,7 +124,7 @@ get_2020_attendance_data <- function(attendance_data) {
     html_node("table") %>% 
     html_table() %>% 
     select(Tm, Home) %>% 
-    mutate(Home=replace_na(as.numeric(str_replace(Home, ",", "")), 0)) %>% 
+    mutate(Home=replace_na(as.numeric(str_replace(Home, ",", "")), 0) / 16) %>% 
     filter(!is.na(Tm)) %>% 
     filter(Tm != "") %>% 
     separate(Tm, c("city", "team_name"),sep=" (?=[^ ]*$)") %>% 
