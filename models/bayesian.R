@@ -32,10 +32,22 @@ load_bayesian_mods <- function(path="results/bayesian_fits.rda"){
   return(fits)
 }
 
-
-
-if(!interactive()){
-  source('utils/get_data.R')
-  attendance <- get_attendance_data()
-  fits <- fit_bayesian_mods(attendance)
+load_bayesian_fit <- function(path="results/bayesian_fit.rda"){
+  if (!file.exists(path)){
+    stop(paste("Error: Fits file does not exist at", path))
+  }
+  assign('fit', get(load(path)))
+  return(fit)
 }
+
+load_bayesian_samps <- function(path="results/bayesian_samps.rda"){
+  if (!file.exists(path)){
+    stop(paste("Error: Fits file does not exist at", path))
+  }
+  assign('fit_samps', get(load(path)))
+  return(fit_samps)
+}
+
+
+
+

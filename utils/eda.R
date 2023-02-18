@@ -122,16 +122,3 @@ plot_yearly_revenue <- function(rev_data, rev_team_data, team_name=NA){
   }
   print(plt)
 }
-
-
-if(!interactive()){
-  source("utils/get_data.R")
-  attendance_data <- get_attendance_data()
-  plot_avg_attendance_all_years(attendance_data)
-  plot_avg_win_rate_all_years(attendance_data)
-  plot_avg_attendance_each_year(attendance_data)
-  plot_avg_attendance_each_team(attendance_data)
-  
-  rev_data <- get_revenue_data()
-  plot_yearly_revenue(rev_data)
-}

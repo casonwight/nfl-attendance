@@ -186,10 +186,3 @@ plot_attendance <- function(post_predicted_attendance, attendance_2020, team_nam
   
   return(plt)
 }
-
-
-if (!interactive()) {
-  source("utils/stan.R")
-  priors <- get_priors()
-  
-}

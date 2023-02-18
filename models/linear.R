@@ -16,12 +16,3 @@ load_lin_mod <- function(path="results/lin_mod.rda"){
   assign('lin_mod', get(load(path)))
   return(lin_mod)
 }
-
-
-if(!interactive()){
-  source("utils/get_data.R")
-  
-  attendance <- get_attendance_data()
-  lin_mod <- fit_lin_mod(attendance)
-  print(summary(lin_mod)$coefficients[,1])
-}

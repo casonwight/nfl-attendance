@@ -73,7 +73,7 @@ dollarfy <- function(dollars) {
 get_est_lost_rev <- function(attendance_lost, prices_2019, team_name=NA) {
   if (is.na(team_name) | team_name == "All teams") {
     est_lost_rev <- attendance_lost %>% 
-      left_join(prices_2019) %>% 
+      left_join(prices_2019, by = join_by(team_name)) %>% 
       mutate(total_lost=diff * 16 * avg_cost_2019) %>% 
       pull(total_lost) %>% 
       sum()

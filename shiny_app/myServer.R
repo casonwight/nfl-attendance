@@ -1,11 +1,11 @@
-server <- function(input, output) {
+myServer <- function(input, output) {
   ########################################
   ###      Predicted Revenue Lost      ###
   ########################################
   
   # Posterior predicted attendance for team(s)
   post_predicted_attendance <- reactive({
-    get_post_predicted_attendance(attendance, samples[[which(input$prior_i==prior_names)]], team_names, input$team_name)
+    get_post_predicted_attendance(attendance, fit_samps, team_names, input$team_name)
   })
   
   # Difference between posterior predicted attendance and actual 2020 attendance for team(s)
@@ -115,21 +115,21 @@ server <- function(input, output) {
   ########################################
   # Parameter distribution
   output$dist_plot <- renderPlot({
-    plot_distribution(samples[[which(input$prior_i==prior_names)]], priors[[which(input$prior_i==prior_names)]], input$var_name, team_names, input$team_name)
+    plot_distribution(fit_samps, prior, input$var_name, team_names, input$team_name)
   })
   
   # MCMC Diagnostics
-  output$trace_plot <- renderPlot({
-    get_trace_plot(samples[[which(input$prior_i==prior_names)]], input$var_name, team_names, team_name=input$team_name)
-  })
-  output$acf_plot <- renderPlot({
-    get_acf_plot(samples[[which(input$prior_i==prior_names)]], input$var_name, team_names, team_name=input$team_name)
-  })
   output$n_eff <- renderText({
-    comma(get_effective_sample_size(samples[[which(input$prior_i==prior_names)]], input$var_name, team_names, team_name=input$team_name))
+    scales::comma(get_effective_sample_size(fit_samps, input$var_name, team_names, team_name=input$team_name))
   })
   output$rhat <- renderText({
-    sprintf(get_rhat(fits[[which(input$prior_i==prior_names)]], input$var_name, team_names, team_name=input$team_name), fmt = '%#.4f')
+    sprintf(get_rhat(fit, input$var_name, team_names, team_name=input$team_name), fmt = '%#.4f')
+  })
+  output$trace_plot <- renderPlot({
+    get_trace_plot(fit_samps, input$var_name, team_names, team_name=input$team_name)
+  })
+  output$acf_plot <- renderPlot({
+    get_acf_plot(fit_samps, input$var_name, team_names, team_name=input$team_name)
   })
     
     

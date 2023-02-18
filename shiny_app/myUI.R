@@ -1,10 +1,10 @@
-fluidPage(
+myUI <- fluidPage(
   titlePanel("NFL Ticket Sales in 2020"),
   
   sidebarLayout(
     sidebarPanel(
       selectInput("team_name", "Select a Team", c(team_names, "All teams")),
-      selectInput("prior_i", "Select a Set of Priors", prior_names, 2)
+      # selectInput("prior_i", "Select a Set of Priors", prior_names, 2) # Not enough RAM to include model info for for all 3
     ),
     mainPanel(
       # 3 different tabs (pred revenue loss, parameter modeling, EDA)

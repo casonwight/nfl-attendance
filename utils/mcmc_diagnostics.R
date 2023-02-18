@@ -149,29 +149,3 @@ get_rhat <- function(fit, var_name, team_names, team_name=NA) {
   }
   return(rhat)
 }
-
-
-if (!interactive()) {
-  source('utils/get_data.R')
-  source('models/bayesian.R')
-  
-  team_names <- get_attendance_data() %>% pull(home_team) %>% unique()
-  fit <- load_bayesian_mods()[[1]]
-  samples <- rstan::extract(fit)
-  
-  print(get_trace_plot(samples, 'overall_alpha', team_names))
-  print(get_trace_plot(samples, 'alphas', team_names))
-  print(get_trace_plot(samples, 'alphas', team_names, '49ers'))
-  
-  print(get_acf_plot(samples, 'overall_alpha', team_names))
-  print(get_acf_plot(samples, 'alphas', team_names))
-  print(get_acf_plot(samples, 'alphas', team_names, '49ers'))
-  
-  print(get_effective_sample_size(samples, 'overall_alpha', team_names))
-  print(get_effective_sample_size(samples, 'alphas', team_names))
-  print(get_effective_sample_size(samples, 'alphas', team_names, '49ers'))
-  
-  print(get_rhat(fit, 'overall_alpha', team_names))
-  print(get_rhat(fit, 'alphas', team_names))
-  print(get_rhat(fit, 'alphas', team_names, '49ers'))
-}

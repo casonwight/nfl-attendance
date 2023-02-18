@@ -77,17 +77,3 @@ get_stan_model <- function(data, priors){
   
   return(fit)
 }
-
-
-load_stan_models <- function(path) {
-  
-}
-
-
-if(!interactive()){
-  source("utils/get_data.R")
-  
-  attendance <- get_attendance_data()
-  stan_data <- prepare_data_for_stan(attendance)
-  priors <- get_priors()
-}
