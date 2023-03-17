@@ -17,7 +17,8 @@ The app has three tabs, Estimated Revenue Loss, Parameter Modeling, and Explorat
 ### Estimated Revenue Loss
 
 This tab contains the following: 
-- The estimated dollar revenue loss as a result of covid (calculated as $\text{avg price of 2019 tickets}\times(\text{estimated 2020 weekly avg attendees}-\text{actual 2020 weekly avg attendees})\text{num yearly games}$)
+- The estimated dollar revenue loss as a result of covid, calculated as the following:
+$\text{avg price of 2019 tickets}\times(\text{estimated 2020 weekly avg attendees}-\text{actual 2020 weekly avg attendees})\text{num yearly games}$
 - Plot of the posterior predicted 2020 weekly average attendance vs the actual
 - The structure of the Bayesian model: 
 $$
