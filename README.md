@@ -20,7 +20,8 @@ This tab contains the following:
 - The estimated dollar revenue loss as a result of covid, calculated as the following:
 $\text{avg price of 2019 tickets}\times(\text{estimated 2020 weekly avg attendees}-\text{actual 2020 weekly avg attendees})\text{num yearly games}$
 - Plot of the posterior predicted 2020 weekly average attendance vs the actual
-- The structure of the Bayesian model: 
+- The structure of the Bayesian model:  
+
 $$
 \begin{align}
 \text{Est 2020 Attendance}_\text{team}&\sim\mathcal{N}\left(\mu_\text{team}, \sigma^2\right) \\
