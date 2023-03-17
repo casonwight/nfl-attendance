@@ -62,9 +62,9 @@ The samples can then be loaded with `load_bayesian_samps() %>% downsample_samps(
 Once `bayesian_samps.rda` is saved, you can run the app yourself using `shiny_app/app.R` or deploy with `run_app.R`.
 
 ## Structure
-Static data for this project is found in the `data` directory.
-`main.Rmd`/`main.html` is a static analysis, comparable to the shiny app on "All teams".
-The code to generate models are stored in the `models` directory.
-The model results and code to generate postprocessing calculations and plots are in the `results` directory.
-All shiny app functions and tools are in the `shiny_app` directory.
-Other tools for MCMC diagnostics, EDA, and data scraping are in the `utils` directory.
+Static data for this project is found in the `data` directory.  
+`main.Rmd`/`main.html` is a static analysis, comparable to the shiny app on "All teams".  
+The code to generate models are stored in the `models` directory.  
+The model results and code to generate postprocessing calculations and plots are in the `results` directory.  
+All shiny app functions and tools are in the `shiny_app` directory.  
+Other tools for MCMC diagnostics, EDA, and data scraping are in the `utils` directory.  
