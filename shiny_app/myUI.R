@@ -7,12 +7,12 @@ myUI <- fluidPage(
       # selectInput("prior_i", "Select a Set of Priors", prior_names, 2) # Not enough RAM to include model info for for all 3
     ),
     mainPanel(
-      # 3 different tabs (pred revenue loss, parameter modeling, EDA)
+      # 3 different tabs (est revenue loss, parameter modeling, EDA)
       tabsetPanel(
         ########################################
-        ###      Predicted Revenue Lost      ###
+        ###      Estimated Revenue Loss      ###
         ########################################
-        tabPanel(title="Predicted Revenue Lost",
+        tabPanel(title="Estimated Revenue Loss",
            # Revenue loss
            h3("Estimated impact of Covid on ticket sales:"),
            h2(uiOutput("est_loss_revenue")),
