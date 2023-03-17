@@ -2,7 +2,9 @@
 title: "NFL Attendance in 2020"
 author: "Cason Wight"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ## Prep Work for Analysis
@@ -56,7 +58,7 @@ print(var_names)
 
 Model: 
 $$
-\begin{align}
+\begin{aligned}
 \text{Est 2020 Attendance}_\text{team}&\sim\mathcal{N}\left(\mu_\text{team}, \sigma^2\right) \\
 \mu_\text{team}&=\alpha_\text{team} \\
       &~~~~~~+\beta_\text{team} \times \text{2019 Year Attendance} \\
@@ -67,7 +69,7 @@ $$
 \beta_\text{team}&\sim\mathcal{N}(\beta, \eta^2) \\
 \beta&\sim\mathcal{N}(\mu_{\beta}, \sigma^2_\beta) \\
 \theta&\sim\mathcal{N}(\mu_{\theta}, \sigma^2_\theta) \\
-\end{align}
+\end{aligned}
 $$
 
 ## Exploratory Data Analysis
