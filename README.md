@@ -21,7 +21,7 @@ This tab contains the following:
 - Plot of the posterior predicted 2020 weekly average attendance vs the actual
 - The structure of the Bayesian model: 
 $$
-\begin{aligned}
+\begin{align}
 \text{Est 2020 Attendance}_\text{team}&\sim\mathcal{N}\left(\mu_\text{team}, \sigma^2\right) \\
 \mu_\text{team}&=\alpha_\text{team} \\
       &~~~~~~+\beta_\text{team} \times \text{2019 Year Attendance} \\
@@ -32,5 +32,5 @@ $$
 \beta_\text{team}&\sim\mathcal{N}(\beta, \eta^2) \\
 \beta&\sim\mathcal{N}(\mu_{\beta}, \sigma^2_\beta) \\
 \theta&\sim\mathcal{N}(\mu_{\theta}, \sigma^2_\theta) \\
-\end{aligned}
+\end{align}
 $$
