@@ -26,8 +26,7 @@ rev_team_data <<- get_team_revenue_data(team_names, team_cities)
 # Load models and modeling information
 prior_names <<- c("Tight priors", "Non-informative priors", "Balanced")
 prior <<- get_priors()[[1]]
-fit <<- load_bayesian_fit()
-fit_samps <<- load_bayesian_samps()
+fit_samps <<- load_bayesian_samps() %>% downsample_samps()
 var_names <<- fit_samps %>% names() %>% .[1:6]
 
 

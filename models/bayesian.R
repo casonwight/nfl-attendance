@@ -49,5 +49,20 @@ load_bayesian_samps <- function(path="results/bayesian_samps.rda"){
 }
 
 
+downsample_samps <- function(samps, new_n=10000 / 4){
+  n <- length(samps[['lp__']]) / 4
+  sample_vals <- as.vector(sapply(1:4, function(i) sample(x=((1:n) + (n*(i-1))), size=new_n, replace=FALSE)))
+  
+  for (var in names(samps)){
+    if (length(dim(samps[[var]])) == 1) {
+      samps[[var]] <- samps[[var]][sample_vals]
+    } else {
+      samps[[var]] <- samps[[var]][sample_vals, ]
+    }
+  }
+  return(samps)
+}
+
+
 
 

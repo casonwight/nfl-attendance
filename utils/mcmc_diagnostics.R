@@ -135,17 +135,17 @@ get_effective_sample_size <- function(samples, var_name, team_names, team_name=N
   return(n_eff)
 }
 
-get_rhat <- function(fit, var_name, team_names, team_name=NA) {
+get_rhat <- function(samples, var_name, team_names, team_name=NA) {
   if (str_sub(var_name, -1, -1) != 's'){
-    rhat <- summary(fit)$summary[var_name,'Rhat']
+    rhat <- rstan::Rhat(matrix(samples[[var_name]], ncol=4)) %>% set_names(var_name)
   } else if (is.na(team_name) | team_name == "All teams") {
     all_row_names <- paste0(var_name, "[", 1:length(team_names), "]")
     short_var_name <- str_sub(var_name, end=-2)
-    rhat <- summary(fit)$summary[all_row_names, 'Rhat'] %>% setNames(paste(short_var_name, team_names, sep="_"))
+    rhat <- sapply(team_names, function(tm) rstan::Rhat(matrix(samples[[var_name]][, which(tm==team_names)], ncol=4))) %>% setNames(paste(short_var_name, team_names, sep="_"))
   } else {
     short_var_name <- str_sub(var_name, end=-2)
     row_name <- paste0(var_name, "[", which(team_name==team_names), "]")
-    rhat <- summary(fit)$summary[row_name, 'Rhat'] %>% setNames(paste(short_var_name, team_name, sep="_"))
+    rhat <- rstan::Rhat(matrix(samples[[var_name]][, which(team_name==team_names)], ncol=4)) %>% setNames(paste(short_var_name, team_name, sep="_"))
   }
   return(rhat)
 }

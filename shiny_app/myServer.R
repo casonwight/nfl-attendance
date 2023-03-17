@@ -123,7 +123,7 @@ myServer <- function(input, output) {
     scales::comma(get_effective_sample_size(fit_samps, input$var_name, team_names, team_name=input$team_name))
   })
   output$rhat <- renderText({
-    sprintf(get_rhat(fit, input$var_name, team_names, team_name=input$team_name), fmt = '%#.4f')
+    sprintf(get_rhat(fit_samps, input$var_name, team_names, team_name=input$team_name), fmt = '%#.4f')
   })
   output$trace_plot <- renderPlot({
     get_trace_plot(fit_samps, input$var_name, team_names, team_name=input$team_name)
