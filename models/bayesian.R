@@ -23,6 +23,17 @@ fit_bayesian_mods <- function(data, path="results/bayesian_fits.rda"){
   return(fits)
 }
 
+save_fit_tight_priors <- function(fits, path="results/bayesian_samps.rda") {
+  fit <- fits[[1]]
+  save(fit, file=path)
+  return(fit)
+}
+
+save_samps_tight_priors <- function(fit, path="results/bayesian_samps.rda") {
+    samps <- rstan::extract(fit)
+    save(samps, file=path)
+    return(samps)
+}
 
 load_bayesian_mods <- function(path="results/bayesian_fits.rda"){
   if (!file.exists(path)){

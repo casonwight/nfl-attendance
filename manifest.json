@@ -4017,13 +4017,13 @@
       "checksum": "12d53ba3481a49f18cc2df4ed61b87b7"
     },
     "models/bayesian.R": {
-      "checksum": "19bf847bfee79a500e3ce5bc406c006a"
+      "checksum": "3c8234dded92ea8809b2492de63cd3f6"
     },
     "results/calculations.R": {
       "checksum": "980d9a649f7db563c8a4a5d6826d452a"
     },
     "results/plots.R": {
-      "checksum": "e4254cf9c6c4b217a0c2f055b35e4bbd"
+      "checksum": "797d86bda5ff1366c1e534369ae2fa0d"
     },
     "shiny_app/myServer.R": {
       "checksum": "1c045f2cd08dd765dad2417babfdac7d"
@@ -4032,7 +4032,7 @@
       "checksum": "5334d7433e672d93b605d1c986a5c9a8"
     },
     "shiny_app/rsconnect/documents/app.R/shinyapps.io/cason-wight/nflattendance.dcf": {
-      "checksum": "053f1d5c24e853e33c73b689383077c7"
+      "checksum": "2d85756bfbd51ef53f679455660a87b5"
     },
     "shiny_app/rsconnect/shinyapps.io/cason-wight/nflattendance.dcf": {
       "checksum": "6757c44ea709f4bab2c1571ebb91ff31"

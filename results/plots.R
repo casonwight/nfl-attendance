@@ -159,7 +159,7 @@ plot_attendance <- function(post_predicted_attendance, attendance_2020, team_nam
       geom_segment(data = attendance_2020_ordered, 
                    aes(x = Home, xend = Home,
                        y = as.numeric(team_name), yend = as.numeric(team_name)+1, color="Actual"), 
-                   lwd = 1, color = "red") +
+                   linewidth = 1, color = "red") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
       coord_flip()
     
@@ -174,7 +174,7 @@ plot_attendance <- function(post_predicted_attendance, attendance_2020, team_nam
       setNames(c("x")) %>% 
       ggplot(aes(x=x, color="Posterior Predicted")) + 
       geom_density() + 
-      geom_vline(data=data.frame(act_attendance), aes(xintercept=Home, color="Actual"), lwd = 1) +
+      geom_vline(data=data.frame(act_attendance), aes(xintercept=Home, color="Actual"), linewidth = 1) +
       labs(title=paste("2020 NFL Attendance for", team_name), 
            x="Avg. Weekly Attendance", 
            y="Density",
