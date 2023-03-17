@@ -22,25 +22,44 @@ source("results/plots.R")
 
 ### Load data
 ```{r data}
-attendance <- get_attendance_data() %>% mutate(home_team = str_replace(home_team, "Redskins", "Commanders"))
+attendance <- get_attendance_data() %>% 
+  mutate(home_team = str_replace(home_team, "Redskins", "Commanders"))
 print(attendance %>% head())
-attendance_2020 <- get_2020_attendance_data() %>% mutate(team_name = str_replace(team_name, "Redskins", "Commanders"))
+
+attendance_2020 <- get_2020_attendance_data() %>% 
+  mutate(team_name = str_replace(team_name, "Redskins", "Commanders"))
 print(attendance_2020 %>% head())
+
 prices_2019 <- get_average_ticket_price_data()
 print(prices_2019 %>% head())
-team_names <- attendance_2020 %>% pull(team_name) %>% unique() %>% as.character()
+
+team_names <- attendance_2020 %>% 
+  pull(team_name) %>% 
+  unique() %>% 
+  as.character()
 print(team_names %>% head())
-team_cities <- sapply(team_names, function(name) attendance_2020 %>% filter(team_name == name) %>% pull(city) %>% .[1])
+
+team_cities <- sapply(team_names, function(name) {
+  attendance_2020 %>% 
+    filter(team_name == name) %>% 
+    pull(city) %>% 
+    .[1]
+})
 print(team_cities %>% head())
+
 rev_data <- get_revenue_data()
 print(rev_data %>% head())
+
 rev_team_data <- get_team_revenue_data(team_names, team_cities)
 print(rev_team_data %>% head())
 ```
 
 ### Run models (may take several hours, skip to load models if already done)
 ```{r run_models, eval=FALSE}
-fit_samps <- fit_bayesian_mods() %>% save_fit_tight_priors() %>% save_samps_tight_priors() %>% downsample_samps()
+fit_samps <- fit_bayesian_mods() %>% 
+  save_fit_tight_priors() %>% 
+  save_samps_tight_priors() %>% 
+  downsample_samps()
 ```
 
 ### Load models (much faster if models have already been run and samples saved, can be skipped if running model in above chunk)
@@ -136,29 +155,47 @@ Nothing concerning is in the trace plots nor the autocorrelation plots.
 
 ## Estimated Revenue Loss
 
+### Attendance
 Which teams had the biggest attendance loss because of covid?
 ```{r attendance_results}
-post_predicted_attendance <- get_post_predicted_attendance(attendance, fit_samps, team_names, "All teams")
-plot_attendance(post_predicted_attendance, attendance_2020, team_names, "All teams")
+post_predicted_attendance <- get_post_predicted_attendance(
+  attendance, 
+  fit_samps, 
+  team_names, 
+  "All teams"
+)
+
+plot_attendance(
+  post_predicted_attendance, 
+  attendance_2020, 
+  team_names, 
+  "All teams"
+)
 ```
 
 The Jets seem to have the worst impact on attendance. 
-The Chargers had the smallest impact, becuase they had such low attendance in the first place.
+The Chargers had the smallest impact, because they had such low attendance in the first place.
+
+### Revenue
 
 $$\text{Impact of Covid on Weekly Attendance}_\text{team}\approx\text{Actual 2020 Attendance}_\text{team}-\text{Est 2020 Attendance}_\text{team}$$
-$$\text{Est Revenue Impact}\approx\sum_{\text{team}\in\text{All teams}}{\text{Impact of Covid on Weekly Attendance}_\text{team} \times \text{Avg. 2019 Ticket Cost}_\text{team} \times \text{Num Weeks}}$$
+$$\text{Est Rev Impact}\approx\sum_{\text{team}\in\text{All teams}}{\text{Impact Weekly Attendance}_\text{team} \times \text{Avg. 2019 Ticket Cost}_\text{team} \times \text{Num Weeks}}$$
 
 How much money was actually lost on ticket sales because of covid? 
 ```{r revenue_results}
-post_predicted_loss_attendance <- get_post_predicted_lost_attendance(post_predicted_attendance, attendance_2020, team_names, "All teams")
+post_predicted_loss_attendance <- get_post_predicted_lost_attendance(
+  post_predicted_attendance,
+  attendance_2020, 
+  team_names, 
+  "All teams"
+)
 print(post_predicted_loss_attendance %>% head())
-est_rev_loss <- get_est_lost_rev(post_predicted_loss_attendance, prices_2019, "All teams")
+
+est_rev_loss <- get_est_lost_rev(
+  post_predicted_loss_attendance, 
+  prices_2019, 
+  "All teams"
+)
 ```
 
 Estimated Revenue Loss: `r est_rev_loss`
-
-
-
-
-
-

@@ -5,7 +5,7 @@ account: cason-wight
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 8340256
-bundleId: 6972451
+bundleId: 6972496
 url: https://cason-wight.shinyapps.io/nflattendance/
-when: 1679075444.53922
-lastSyncTime: 1679075444.53924
+when: 1679076607.54031
+lastSyncTime: 1679076607.54033
